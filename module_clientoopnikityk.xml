@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_clientoopnikityk" default="compile.module.clientoopnikityk">
+  <dirname property="module.clientoopnikityk.basedir" file="${ant.file.module_clientoopnikityk}"/>
+  
+  <property name="module.jdk.home.clientoopnikityk" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.clientoopnikityk" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.clientoopnikityk" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.clientoopnikityk" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="clientoopnikityk.output.dir" value="${module.clientoopnikityk.basedir}/out/production/ClientOopNikityk"/>
+  <property name="clientoopnikityk.testoutput.dir" value="${module.clientoopnikityk.basedir}/out/test/ClientOopNikityk"/>
+  
+  <path id="clientoopnikityk.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="clientoopnikityk.module.production.classpath">
+    <path refid="${module.jdk.classpath.clientoopnikityk}"/>
+  </path>
+  
+  <path id="clientoopnikityk.runtime.production.module.classpath">
+    <pathelement location="${clientoopnikityk.output.dir}"/>
+  </path>
+  
+  <path id="clientoopnikityk.module.classpath">
+    <path refid="${module.jdk.classpath.clientoopnikityk}"/>
+    <pathelement location="${clientoopnikityk.output.dir}"/>
+  </path>
+  
+  <path id="clientoopnikityk.runtime.module.classpath">
+    <pathelement location="${clientoopnikityk.testoutput.dir}"/>
+    <pathelement location="${clientoopnikityk.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.clientoopnikityk">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.clientoopnikityk">
+    <patternset refid="excluded.from.module.clientoopnikityk"/>
+  </patternset>
+  
+  <path id="clientoopnikityk.module.sourcepath">
+    <dirset dir="${module.clientoopnikityk.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.clientoopnikityk" depends="compile.module.clientoopnikityk.production,compile.module.clientoopnikityk.tests" description="Compile module ClientOopNikityk"/>
+  
+  <target name="compile.module.clientoopnikityk.production" depends="register.custom.compilers" description="Compile module ClientOopNikityk; production classes">
+    <mkdir dir="${clientoopnikityk.output.dir}"/>
+    <javac2 destdir="${clientoopnikityk.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.clientoopnikityk}/javac">
+      <compilerarg line="${compiler.args.clientoopnikityk}"/>
+      <bootclasspath refid="clientoopnikityk.module.bootclasspath"/>
+      <classpath refid="clientoopnikityk.module.production.classpath"/>
+      <src refid="clientoopnikityk.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.clientoopnikityk"/>
+    </javac2>
+    
+    <copy todir="${clientoopnikityk.output.dir}">
+      <fileset dir="${module.clientoopnikityk.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.clientoopnikityk.tests" depends="register.custom.compilers,compile.module.clientoopnikityk.production" description="compile module ClientOopNikityk; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.clientoopnikityk" description="cleanup module">
+    <delete dir="${clientoopnikityk.output.dir}"/>
+    <delete dir="${clientoopnikityk.testoutput.dir}"/>
+  </target>
+</project>
